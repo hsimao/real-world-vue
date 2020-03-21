@@ -1,5 +1,5 @@
 import axios from 'axios'
-import NProgress from 'nprogress'
+import store from '../store/store.js'
 
 const apiClient = axios.create({
   baseURL: `http://localhost:3000`,
@@ -10,15 +10,27 @@ const apiClient = axios.create({
   }
 })
 
-apiClient.interceptors.request.use(config => {
-  NProgress.start()
-  return config
-})
+apiClient.interceptors.request.use(
+  config => {
+    store.commit('loading/START_LOADING')
+    return config
+  },
+  error => {
+    store.commit('loading/FINISH_LOADING')
+    return Promise.reject(error)
+  }
+)
 
-apiClient.interceptors.response.use(response => {
-  NProgress.done()
-  return response
-})
+apiClient.interceptors.response.use(
+  response => {
+    store.commit('loading/FINISH_LOADING')
+    return response
+  },
+  error => {
+    store.commit('loading/FINISH_LOADING')
+    return Promise.reject(error)
+  }
+)
 
 export default {
   getEvents(perPage, page) {
