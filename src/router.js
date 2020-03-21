@@ -1,8 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import EventCreate from './views/EventCreate.vue'
-import EventList from './views/EventList.vue'
-import EventShow from './views/EventShow.vue'
 import NProgress from 'nprogress'
 import store from '@/store/store'
 
@@ -14,18 +11,21 @@ const router = new Router({
     {
       path: '/',
       name: 'event-list',
-      component: EventList,
+      component: () =>
+        import(/* webpackChunkName: "event-list" */ './views/EventList.vue'),
       props: true
     },
     {
       path: '/event/create',
       name: 'event-create',
-      component: EventCreate
+      component: () =>
+        import(/* webpackChunkName: "event-create" */ './views/EventCreate.vue')
     },
     {
       path: '/event/:id',
       name: 'event-show',
-      component: EventShow,
+      component: () =>
+        import(/* webpackChunkName: "event-show" */ './views/EventShow.vue'),
       props: true,
       // 等待取得資料後才進入此畫面
       beforeEnter(routeTo, routeFrom, next) {
