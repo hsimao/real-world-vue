@@ -62,6 +62,14 @@ export default {
       event: this.createFreshEventObject()
     }
   },
+  beforeRouteLeave(routeTo, routeFrom, next) {
+    const answer = window.confirm('你確定要離開？')
+    if (answer) {
+      next()
+    } else {
+      next(false)
+    }
+  },
   methods: {
     createEvent() {
       this.$store
