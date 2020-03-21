@@ -27,17 +27,20 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
+import store from '@/store/store'
 
 export default {
-  props: ['id'],
-  created() {
-    this.fetchEvent(this.id)
+  // 等待取得資料後才進入此畫面
+  beforeRouteEnter(routeTo, routeFro, next) {
+    store
+      .dispatch('event/fetchEvent', routeTo.params.id)
+      .then(() => next())
+      .catch(() => next(false))
   },
   computed: mapState({
     event: state => state.event.event
-  }),
-  methods: mapActions('event', ['fetchEvent'])
+  })
 }
 </script>
 <style scoped>
