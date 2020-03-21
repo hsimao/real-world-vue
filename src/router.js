@@ -35,7 +35,13 @@ const router = new Router({
             routeTo.params.event = event
             next()
           })
-          .catch(() => next({ name: '404', params: { resource: 'event' } }))
+          .catch(error => {
+            if (error.response && error.response.status === 404) {
+              next({ name: '404', params: { resource: 'event' } })
+            } else {
+              next({ name: 'network-issue' })
+            }
+          })
       }
     },
     {
@@ -44,6 +50,15 @@ const router = new Router({
       component: () =>
         import(/* webpackChunkName: "NotFound" */ './views/NotFound.vue'),
       props: true
+    },
+    {
+      path: '/network-issue',
+      name: 'network-issue',
+      /* eslint-disable */
+      component: () =>
+        import(
+          /* webpackChunkName: "NetworkIssue" */ './views/NetworkIssue.vue'
+        )
     },
     {
       path: '*',
