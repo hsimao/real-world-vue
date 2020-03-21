@@ -35,8 +35,19 @@ const router = new Router({
             routeTo.params.event = event
             next()
           })
-          .catch(() => next(false))
+          .catch(() => next({ name: '404', params: { resource: 'event' } }))
       }
+    },
+    {
+      path: '/404',
+      name: '404',
+      component: () =>
+        import(/* webpackChunkName: "NotFound" */ './views/NotFound.vue'),
+      props: true
+    },
+    {
+      path: '*',
+      redirect: { name: '404', params: { resource: 'page' } }
     }
   ]
 })
