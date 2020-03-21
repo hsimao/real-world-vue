@@ -16,6 +16,12 @@ const router = new Router({
       props: true
     },
     {
+      path: '/example',
+      name: 'example',
+      component: () =>
+        import(/* webpackChunkName: "example" */ './views/Example.vue')
+    },
+    {
       path: '/event/create',
       name: 'event-create',
       component: () =>
