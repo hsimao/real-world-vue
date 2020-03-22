@@ -2,6 +2,7 @@
   color: red;
 }
 
-input.error {
+.error input,
+.error select {
   border: solid 1px red;
 }
